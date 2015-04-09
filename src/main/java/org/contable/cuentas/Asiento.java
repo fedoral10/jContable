@@ -115,7 +115,7 @@ public class Asiento {
          Si cuenta es deudora sube en el debe(debito, debitar), baja en el haber(credito,acreditar)
          */
         Cuenta cuenta = movCuenta.getCuenta();
-        if (cuenta.getTipoCuenta() == Cuenta.Tipo.DEUDORA) {
+        if (cuenta.getNaturaleza() == Cuenta.Naturaleza.DEUDORA) {
             cuenta.setSaldo(cuenta.getSaldo() + movCuenta.getDebito());
             cuenta.setSaldo(cuenta.getSaldo() - movCuenta.getCredito());
             Cuenta padre = cuenta.getPadre();

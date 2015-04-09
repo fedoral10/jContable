@@ -22,13 +22,13 @@ public class CuentaTest {
     public void pruebaTotal() {
 
         try {
-            Cuenta activo = new Cuenta("Activo",Cuenta.Tipo.DEUDORA);
-            Cuenta caja = new Cuenta("Caja",Cuenta.Tipo.DEUDORA);
-            Cuenta banco = new Cuenta("Banco",Cuenta.Tipo.DEUDORA);
-            Cuenta cuentaCorriente = new Cuenta("Cuenta Corriente",Cuenta.Tipo.DEUDORA);
-            Cuenta pasivo = new Cuenta("Pasivo",Cuenta.Tipo.ACREEDORA);
-            Cuenta capital = new Cuenta("Capital",Cuenta.Tipo.ACREEDORA);
-            Cuenta cuentaAhorro = new Cuenta("Ahorro",Cuenta.Tipo.DEUDORA);
+            Cuenta activo = new Cuenta("Activo",Cuenta.Naturaleza.DEUDORA);
+            Cuenta caja = new Cuenta("Caja",Cuenta.Naturaleza.DEUDORA);
+            Cuenta banco = new Cuenta("Banco",Cuenta.Naturaleza.DEUDORA);
+            Cuenta cuentaCorriente = new Cuenta("Cuenta Corriente",Cuenta.Naturaleza.DEUDORA);
+            Cuenta pasivo = new Cuenta("Pasivo",Cuenta.Naturaleza.ACREEDORA);
+            Cuenta capital = new Cuenta("Capital",Cuenta.Naturaleza.ACREEDORA);
+            Cuenta cuentaAhorro = new Cuenta("Ahorro",Cuenta.Naturaleza.DEUDORA);
             
             banco.setPadre(activo);
             cuentaCorriente.setPadre(banco);

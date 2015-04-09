@@ -6,7 +6,6 @@
 package org.contable.cuentas;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -18,7 +17,7 @@ public class Cuenta {
 
     private double saldo = 0;
     private String nombre;
-    private Tipo tipoCuenta;
+    private Naturaleza naturalezaCuenta;
 
     public Cuenta getPadre() {
         return padre;
@@ -28,13 +27,12 @@ public class Cuenta {
         this.padre = padre;
     }
     private Cuenta padre;
-    public Cuenta(String nombre, Tipo tipo) {
+    public Cuenta(String nombre, Naturaleza tipo) {
         this.nombre = nombre;
-        this.tipoCuenta = tipo;
+        this.naturalezaCuenta = tipo;
     }
 
-    public enum Tipo {
-
+    public enum Naturaleza {
         ACREEDORA, DEUDORA
     }
 
@@ -54,12 +52,12 @@ public class Cuenta {
         this.saldo = saldo;
     }
 
-    public Tipo getTipoCuenta() {
-        return tipoCuenta;
+    public Naturaleza getNaturaleza() {
+        return naturalezaCuenta;
     }
 
-    public void setTipoCuenta(Tipo tipoCuenta) {
-        this.tipoCuenta = tipoCuenta;
+    public void setNaturaleza(Naturaleza naturaleza) {
+        this.naturalezaCuenta = naturaleza;
     }
     
     public String getJerarquia(){
