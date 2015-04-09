@@ -5,7 +5,6 @@
  */
 package org.contable.cuentas;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
@@ -31,34 +30,33 @@ public class Asiento {
     public void setFecha(DateTime fecha) {
         this.fecha = fecha;
     }
+
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("Cuenta\t\t\t\tDebitos\t\tCreditos\n");
         builder.append("----------------------------------------------------------\n");
         Formatter formater = new Formatter();
         String formato = "%-32s%-16s%-16s\n";
-        
-        for(MovimientoCuenta movDeb:this.debitos)
-        {
-            Cuenta cuenta= movDeb.getCuenta();            
-            builder.append(formater.format(formato, cuenta.getNombre(),movDeb.getDebito(),movDeb.getCredito()));
+
+        for (MovimientoCuenta movDeb : this.debitos) {
+            Cuenta cuenta = movDeb.getCuenta();
+            //builder.append(formater.format(formato, cuenta.getNombre(),movDeb.getDebito(),movDeb.getCredito()));
+            formater.format(formato, cuenta.getNombre(), movDeb.getDebito(), movDeb.getCredito());
             //formater.flush();
-            formater= new Formatter();
+            //formater= new Formatter();
         }
-        
-        for(MovimientoCuenta movCred:this.creditos)
-        {
-            Cuenta cuenta= movCred.getCuenta();
-            builder.append(formater.format(formato, cuenta.getNombre(),movCred.getDebito(),movCred.getCredito()));
+        for (MovimientoCuenta movCred : this.creditos) {
+            Cuenta cuenta = movCred.getCuenta();
+            //builder.append(formater.format(formato, cuenta.getNombre(),movCred.getDebito(),movCred.getCredito()));
+            formater.format(formato, cuenta.getNombre(), movCred.getDebito(), movCred.getCredito());
             //formater.flush();
-            formater= new Formatter();
-            
-        }        
-        
+            //formater= new Formatter();
+        }
+        builder.append(formater.toString());
         return builder.toString();
     }
+
     public Asiento(String descripcion) {
         debitos = new ArrayList<>();
         creditos = new ArrayList<>();
@@ -66,16 +64,18 @@ public class Asiento {
     }
 
     public double getMontoDebitos() {
-        if(montoDebitos==0)
+        if (montoDebitos == 0) {
             this.obtenerTotalDebitos();
+        }
         return montoDebitos;
     }
 
     public double getMontoCreditos() {
-        if(montoCreditos==0)
+        if (montoCreditos == 0) {
             this.obtenerTotalCreditos();
+        }
         return montoCreditos;
-        
+
     }
 
     public String getDescripcion() {
@@ -94,14 +94,33 @@ public class Asiento {
         this.debitos.add(movCuenta);
     }
 
+    public boolean asientoBalanceado() {
+        return this.obtenerTotalCreditos() == this.obtenerTotalDebitos();
+    }
+
+    public boolean asientoEstaCompleto() {
+        return !(this.debitos.isEmpty() || this.creditos.isEmpty());
+    }
+
+    private boolean verificaAsientoCorrecto() {
+        return asientoBalanceado() && asientoEstaCompleto();
+    }
+
     public void contabilizar() throws Exception {
 
-        if (this.debitos.isEmpty() || this.creditos.isEmpty()) {
+        /*if (this.debitos.isEmpty() || this.creditos.isEmpty()) {
+         throw new IllegalArgumentException("Las listas debitos y creditos no pueden estar vacias");
+         }
+         if (!this.asientoBalanceado()) {
+         throw new IllegalArgumentException("El total del debito " + this.obtenerTotalDebitos() + " debe ser igual al total del credito " + this.obtenerTotalCreditos());
+         }*/
+        if (!this.asientoEstaCompleto()) {
             throw new IllegalArgumentException("Las listas debitos y creditos no pueden estar vacias");
         }
-        if (this.obtenerTotalCreditos() != this.obtenerTotalDebitos()) {
+        if (!this.asientoBalanceado()) {
             throw new IllegalArgumentException("El total del debito " + this.obtenerTotalDebitos() + " debe ser igual al total del credito " + this.obtenerTotalCreditos());
         }
+
         for (MovimientoCuenta mov : debitos) {
             modificaSaldoCuenta(mov);
         }
@@ -121,10 +140,8 @@ public class Asiento {
             Cuenta padre = cuenta.getPadre();
 
             while (padre != null) {
-
                 padre.setSaldo(padre.getSaldo() + movCuenta.getDebito());
                 padre.setSaldo(padre.getSaldo() - movCuenta.getCredito());
-
                 padre = padre.getPadre();
             }
         } else {
@@ -140,8 +157,6 @@ public class Asiento {
         }
     }
 
-    
-    
     private double obtenerTotalDebitos() {
         double monto = 0;
         for (MovimientoCuenta mov : this.debitos) {
